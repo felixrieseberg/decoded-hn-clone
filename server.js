@@ -4,12 +4,12 @@ const http       = require('http');
 const express    = require('express');
 const bodyParser = require('body-parser');
 const swaggerize = require('swaggerize-express');
-const swaggerUi  = require('swaggerize-ui'); // second change
+const swaggerUi  = require('swaggerize-ui');
 const path       = require('path');
 
 const app    = express();
 const server = http.createServer(app);
-const port = process.env.PORT || 8000;
+const port   = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
 
@@ -20,7 +20,7 @@ app.use(swaggerize({
 }));
 
 app.use('/docs', swaggerUi({
-    docs: '/swagger'  
+    docs: '/v1/swagger'  
 }));
 
 server.listen(port, () => {
