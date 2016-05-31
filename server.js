@@ -1,22 +1,28 @@
 'use strict';
 
-var http = require('http');
-var express = require('express');
-var bodyParser = require('body-parser');
-var swaggerize = require('swaggerize-express');
-var path = require('path');
+const http       = require('http');
+const express    = require('express');
+const bodyParser = require('body-parser');
+const swaggerize = require('swaggerize-express');
+const swaggerUi  = require('swaggerize-ui'); // second change
+const path       = require('path');
 
-var app = express();
-
-var server = http.createServer(app);
+const app    = express();
+const server = http.createServer(app);
+const port = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
 
 app.use(swaggerize({
     api: path.resolve('./config/api.yaml'),
-    handlers: path.resolve('./handlers')
+    handlers: path.resolve('./handlers'),
+    docspath: '/swagger'
 }));
 
-server.listen(8000, function () {
-    app.swagger.api.host = server.address().address + ':' + server.address().port;
+app.use('/docs', swaggerUi({
+    docs: '/swagger'  
+}));
+
+server.listen(port, () => {
+    app.swagger.api.host = `${server.address().address}:${server.address().port}`;
 });
