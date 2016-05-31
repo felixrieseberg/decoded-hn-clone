@@ -1,0 +1,105 @@
+swagger: '2.0'
+info:
+  title: Decoded News API
+  description: A neat hacker news clone with a functional backend
+  version: "1.0.0"
+# the domain of the service
+host: decoded-news-api.azurewebsites.net
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /posts:
+    get:
+      summary: Posts
+      description: posts
+      parameters:
+        - name: offset
+          in: query
+          description: Offset f
+          required: true
+          type: number
+          format: int32
+      tags:
+        - Posts
+      responses:
+        200:
+          description: An array of posts
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Post'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Post:
+    type: object
+    properties:
+      post_id:
+        type: string
+        description: Unique identifier representing a post
+      url:
+        type: string
+        description: Link to the article
+      title:
+        type: string
+        description: Title of the post
+      upvotes:
+        type: integer
+        format: int32
+        description: Number of upvotes this comment has received
+      timestamp:
+        type: string
+        format: dateTime
+        description: The date and time the link the link was posted
+      author:
+        type: string
+        description: Author of comment 
+  Comment:
+    type: object
+    properties:
+      author:
+        type: string
+        description: Author of comment 
+      parent_id:
+        type: string
+        description: Unique identifier representing the post or comment this comment is attached to
+      body:
+        type: string
+        description: Body text content of the comment
+      upvotes:
+        type: integer
+        format: int32
+        description: Number of upvotes this comment has received
+      timestamp:
+        type: string
+        format: dateTime
+        description: The date and time the link the link was posted
+  User:
+    type: object
+    properties:
+      first_name:
+        type: string
+        description: First name of the user.
+      last_name:
+        type: string
+        description: Last name of the user.
+      email:
+        type: string
+        description: Email address of the user
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
